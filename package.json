@@ -8,19 +8,36 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
     "build": "tsc && node -e \"const fs=require('fs');['config.json','config.development.json'].forEach(f=>{try{fs.copyFileSync(f,'dist/'+f)}catch(e){}})\"",
-    "start": "cross-env NODE_ENV=production node dist/index.js"
+    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "build:executable": "yarn build && pkg dist/index.js --config package.json --compress Brotli --target node18-linux-x64 --output bandit-bot-linux",
+    "build:all": "npm run build && pkg dist/index.js --targets node18-linux-x64,node18-win-x64,node18-macos-x64 --out-path ./executables"
   },
   "dependencies": {
     "discord.js": "^14.22.1",
     "dotenv": "^17.2.2",
-    "mongodb": "^6.19.0"
+    "mongodb": "^6.19.0",
+    "pkg": "^5.8.1"
   },
   "devDependencies": {
     "@types/mongodb": "^4.0.7",
     "@types/node": "^24.5.0",
     "cross-env": "^10.0.0",
     "nodemon": "^3.1.10",
+    "pkg": "^5.8.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
+  },
+  "pkg": {
+    "assets": [
+      "dist/config.json",
+      "dist/config.development.json",
+      "dist/**/*.json"
+    ],
+    "scripts": [
+      "dist/**/*.js"
+    ],
+    "targets": [
+      "node18-linux-x64"
+    ]
   }
 }

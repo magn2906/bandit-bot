@@ -64,24 +64,35 @@ async function registerCommands() {
 
         const commandData = commands.map(command => command.data.toJSON());
 
-        if (process.env.NODE_ENV === 'development') {
-            const guildId = '1011925605358514208';
-            await rest.put(
-                Routes.applicationGuildCommands(client.user!.id, guildId),
-                { body: commandData },
-            );
-            console.log(`Successfully reloaded ${commandData.length} guild commands.`);
-        } else {
-            await rest.put(
-                Routes.applicationCommands(client.user!.id),
-                { body: commandData },
-            );
-            console.log(`Successfully reloaded ${commandData.length} global commands.`);
-        }
+        // Register globally for all servers
+        await rest.put(
+            Routes.applicationCommands(client.user!.id),
+            { body: commandData },
+        );
+        console.log(`Successfully reloaded ${commandData.length} global commands.`);
+
     } catch (error) {
         console.error('Error registering commands:', error);
     }
 }
+
+client.on('guildCreate', async (guild) => {
+    console.log(`Joined new guild: ${guild.name} (${guild.id})`);
+
+    // Register commands immediately for this guild
+    const rest = new REST().setToken(config.token);
+    const commandData = commands.map(command => command.data.toJSON());
+
+    try {
+        await rest.put(
+            Routes.applicationGuildCommands(client.user!.id, guild.id),
+            { body: commandData },
+        );
+        console.log(`Successfully registered ${commandData.length} commands for new guild: ${guild.name}`);
+    } catch (error) {
+        console.error(`Failed to register commands for new guild ${guild.name}:`, error);
+    }
+});
 
 process.on('SIGINT', async () => {
     console.log('Shutting down...');

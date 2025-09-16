@@ -1,5 +1,6 @@
 ﻿config.json
 config.development.json
+bandit-bot-linux
 
 # IntelliJ project files
 .idea
