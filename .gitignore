@@ -1,4 +1,5 @@
 ﻿config.json
+config.development.json
 
 # IntelliJ project files
 .idea

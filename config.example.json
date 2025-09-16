@@ -1,0 +1,4 @@
+﻿{
+  "token": "token",
+  "mongoConnectionString": "mongodb+srv://..."
+}

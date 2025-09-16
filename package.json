@@ -1,10 +1,26 @@
 {
+  "name": "bandit-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/magn2906/bandit-bot",
+  "author": "Magnus Mortensen <88832331+magn2906@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
+    "build": "tsc && node -e \"const fs=require('fs');['config.json','config.development.json'].forEach(f=>{try{fs.copyFileSync(f,'dist/'+f)}catch(e){}})\"",
+    "start": "cross-env NODE_ENV=production node dist/index.js"
+  },
   "dependencies": {
-    "discord.js": "^14.22.1"
+    "discord.js": "^14.22.1",
+    "dotenv": "^17.2.2",
+    "mongodb": "^6.19.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.35.0",
-    "eslint": "^9.35.0",
+    "@types/mongodb": "^4.0.7",
+    "@types/node": "^24.5.0",
+    "cross-env": "^10.0.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   }
 }
